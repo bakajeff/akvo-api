@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "preinstall": "npx only-allow pnpm",
     "lint": "pnpm biome check --write src"
   },
   "keywords": [],
