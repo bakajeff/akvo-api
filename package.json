@@ -1,0 +1,17 @@
+{
+  "name": "akvo-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "lint": "pnpm biome check --write src"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@biomejs/biome": "1.9.4",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}
