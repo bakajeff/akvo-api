@@ -5,9 +5,10 @@ const app = express();
 app.use(express.json());
 
 import { registerUser } from "@/controllers/register-user";
+import { env } from "./env";
 
 app.post("/customers", registerUser);
 
-app.listen(3000, () => {
-	console.log("Example app listening on port 3000!");
+app.listen(env.PORT, () => {
+	console.log(`🔥 Server running on port ${env.PORT}!`);
 });
