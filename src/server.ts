@@ -4,7 +4,7 @@ const app = express();
 
 app.use(express.json());
 
-import { registerUser } from "./controllers/register-user";
+import { registerUser } from "@/controllers/register-user";
 
 app.post("/customers", registerUser);
 

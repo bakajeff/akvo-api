@@ -13,5 +13,7 @@ export async function registerUser(request: Request, response: Response) {
 		},
 	});
 
-	return response.status(201).json(customer);
+	response.status(201).json(customer);
+
+	return;
 }
