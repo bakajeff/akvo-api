@@ -42,7 +42,7 @@ model Product {
   description  String?
   priceInCents Int
   store        Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
-  storeId      Int          @unique
+  storeId      Int
   orderItems   OrderItems[]
   createdAt    DateTime     @default(now()) @db.Timestamptz()
   updatedAt    DateTime     @updatedAt @db.Timestamptz(6)
