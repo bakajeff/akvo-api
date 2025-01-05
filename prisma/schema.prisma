@@ -21,28 +21,61 @@ model User {
   createdAt DateTime @default(now()) @db.Timestamptz(6)
   updatedAt DateTime @updatedAt @db.Timestamptz(6)
   store     Store?
+  Order     Order[]
 }
 
 model Store {
   id          Int       @id @default(autoincrement())
   name        String
   description String?
-  manager     User      @relation(fields: [managerId], references: [id])
-  managerId   Int       @unique
+  manager     User?     @relation(fields: [managerId], references: [id], onDelete: SetNull)
+  managerId   Int?      @unique
   products    Product[]
   createdAt   DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime  @updatedAt @db.Timestamptz(6)
+  Order       Order[]
 }
 
 model Product {
-  id           Int      @id @default(autoincrement())
+  id           Int          @id @default(autoincrement())
   name         String
   description  String?
   priceInCents Int
-  store        Store    @relation(fields: [storeId], references: [id])
-  storeId      Int      @unique
-  createdAt    DateTime @default(now()) @db.Timestamptz()
-  updatedAt    DateTime @updatedAt @db.Timestamptz(6)
+  store        Store        @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  storeId      Int          @unique
+  orderItems   OrderItems[]
+  createdAt    DateTime     @default(now()) @db.Timestamptz()
+  updatedAt    DateTime     @updatedAt @db.Timestamptz(6)
+}
+
+model Order {
+  id           Int          @id @default(autoincrement())
+  store        Store?       @relation(fields: [storeId], references: [id], onDelete: SetNull)
+  storeId      Int?
+  customer     User?        @relation(fields: [customerId], references: [id], onDelete: SetNull)
+  customerId   Int?
+  orderItems   OrderItems[]
+  status       OrderStatus  @default(pending)
+  totalInCents Int
+  createdAt    DateTime     @default(now()) @db.Timestamptz()
+}
+
+model OrderItems {
+  id           Int      @id @default(autoincrement())
+  order        Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId      Int
+  product      Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+  productId    Int?
+  quantity     Int      @default(1)
+  priceInCents Int
+}
+
+enum OrderStatus {
+  pending
+  canceled
+  processing
+  delivering
+  delivered
 }
 
 enum Role {
