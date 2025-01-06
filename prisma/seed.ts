@@ -1,4 +1,5 @@
 import { faker } from "@faker-js/faker";
+import { createId } from "@paralleldrive/cuid2";
 import { PrismaClient } from "@prisma/client";
 import chalk from "chalk";
 
@@ -8,11 +9,13 @@ async function main() {
 	const [customer1, customer2] = await prisma.user.createManyAndReturn({
 		data: [
 			{
+				id: createId(),
 				name: faker.person.fullName(),
 				email: faker.internet.email(),
 				role: "customer",
 			},
 			{
+				id: createId(),
 				name: faker.person.fullName(),
 				email: faker.internet.email(),
 				role: "customer",
@@ -24,6 +27,7 @@ async function main() {
 
 	const manager = await prisma.user.create({
 		data: {
+			id: createId(),
 			name: faker.person.fullName(),
 			email: faker.internet.email(),
 			role: "manager",
@@ -34,6 +38,7 @@ async function main() {
 
 	const store = await prisma.store.create({
 		data: {
+			id: createId(),
 			name: faker.company.name(),
 			description: faker.company.catchPhrase(),
 			managerId: manager.id,
@@ -45,6 +50,7 @@ async function main() {
 	const availableProducts = await prisma.product.createManyAndReturn({
 		data: [
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -57,6 +63,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -69,6 +76,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -81,6 +89,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -93,6 +102,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -105,6 +115,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -117,6 +128,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -129,6 +141,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -141,6 +154,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -153,18 +167,7 @@ async function main() {
 				description: faker.commerce.productDescription(),
 			},
 			{
-				name: faker.commerce.productName(),
-				priceInCents: Number(
-					faker.commerce.price({
-						min: 190,
-						max: 490,
-						dec: 0,
-					}),
-				),
-				storeId: store.id,
-				description: faker.commerce.productDescription(),
-			},
-			{
+				id: createId(),
 				name: faker.commerce.productName(),
 				priceInCents: Number(
 					faker.commerce.price({
@@ -185,7 +188,7 @@ async function main() {
 	const orderItemsToPush = [];
 
 	for (let i = 0; i < 200; i++) {
-		const orderId = i;
+		const orderId = createId();
 
 		const orderProducts = faker.helpers.arrayElements(availableProducts, {
 			min: 1,
@@ -200,6 +203,7 @@ async function main() {
 			totalInCents += orderProduct.priceInCents * quantity;
 
 			orderItemsToPush.push({
+				id: createId(),
 				orderId,
 				productId: orderProduct.id,
 				priceInCents: orderProduct.priceInCents,

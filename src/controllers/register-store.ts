@@ -1,3 +1,4 @@
+import { createId } from "@paralleldrive/cuid2";
 import { PrismaClient } from "@prisma/client";
 
 import type { Request, Response } from "express";
@@ -9,6 +10,7 @@ export async function registerStore(request: Request, response: Response) {
 
 	const manager = await prisma.user.create({
 		data: {
+			id: createId(),
 			name: managerName,
 			email,
 			role: "manager",
@@ -17,6 +19,7 @@ export async function registerStore(request: Request, response: Response) {
 
 	const store = await prisma.store.create({
 		data: {
+			id: createId(),
 			name: storeName,
 			description,
 			managerId: manager.id,
