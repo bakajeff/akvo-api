@@ -1,12 +1,13 @@
-import type { Request, Response } from "express";
-
 import { createId } from "@paralleldrive/cuid2";
 import { PrismaClient } from "@prisma/client";
+import { Hono } from "hono";
 
 const prisma = new PrismaClient();
 
-export async function registerUser(request: Request, response: Response) {
-	const { name, email } = request.body;
+const app = new Hono();
+
+app.post("/", async (c) => {
+	const { name, email } = await c.req.json();
 
 	const customer = await prisma.user.create({
 		data: {
@@ -16,7 +17,7 @@ export async function registerUser(request: Request, response: Response) {
 		},
 	});
 
-	response.status(201).json(customer);
+	return c.json(customer);
+});
 
-	return;
-}
+export default app;

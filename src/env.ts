@@ -5,7 +5,7 @@ import { config } from "dotenv";
 config();
 
 export const envSchema = z.object({
-	PORT: z.string(),
+	JWT_SECRET_KEY: z.string(),
 	DATABASE_URL: z.string().url(),
 	API_BASE_URL: z.string().url(),
 	AUTH_REDIRECT_URL: z.string().url(),

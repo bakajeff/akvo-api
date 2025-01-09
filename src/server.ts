@@ -1,19 +1,18 @@
-import express from "express";
+import { serve } from "@hono/node-server";
+import { Hono } from "hono";
 
-import { env } from "./env";
+import registerStore from "@/controllers/register-store";
+import registerUser from "@/controllers/register-user";
+import sendAuthenticationLink from "@/controllers/send-authentication-link";
+import authenticateFromLink from "./controllers/authenticate-from-link";
 
-import { registerStore } from "@/controllers/register-store";
-import { registerUser } from "@/controllers/register-user";
-import { sendAuthenticationLink } from "@/controllers/send-authentication-link";
+const app = new Hono();
 
-const app = express();
+app.route("/customers", registerUser);
+app.route("/stores", registerStore);
+app.route("/authenticate", sendAuthenticationLink);
+app.route("/auth-links/authenticate", authenticateFromLink);
 
-app.use(express.json());
-
-app.post("/customers", registerUser);
-app.post("/stores", registerStore);
-app.post("/authenticate", sendAuthenticationLink);
-
-app.listen(env.PORT, () => {
-	console.log(`🔥 Server running on port ${env.PORT}!`);
+serve(app, (info) => {
+	console.log(`🔥 Server running on port ${info.port}`);
 });

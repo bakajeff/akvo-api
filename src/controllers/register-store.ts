@@ -1,12 +1,13 @@
 import { createId } from "@paralleldrive/cuid2";
 import { PrismaClient } from "@prisma/client";
-
-import type { Request, Response } from "express";
+import { Hono } from "hono";
 
 const prisma = new PrismaClient();
 
-export async function registerStore(request: Request, response: Response) {
-	const { storeName, managerName, description, email } = request.body;
+const app = new Hono();
+
+app.post("/", async (c) => {
+	const { storeName, managerName, description, email } = await c.req.json();
 
 	const manager = await prisma.user.create({
 		data: {
@@ -26,7 +27,7 @@ export async function registerStore(request: Request, response: Response) {
 		},
 	});
 
-	response.status(201).json(store);
+	return c.json(store);
+});
 
-	return;
-}
+export default app;

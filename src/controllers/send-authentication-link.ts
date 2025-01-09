@@ -1,16 +1,16 @@
-import { env } from "@/env.js";
 import { transporter } from "@/mail/nodemailer";
 import { createId } from "@paralleldrive/cuid2";
 import { PrismaClient } from "@prisma/client";
-import type { Request, Response } from "express";
+import { Hono } from "hono";
+
+import { env } from "@/env.js";
 
 const prisma = new PrismaClient();
 
-export async function sendAuthenticationLink(
-	request: Request,
-	response: Response,
-) {
-	const { email } = request.body;
+const app = new Hono();
+
+app.post("/", async (c) => {
+	const { email } = await c.req.json();
 
 	const userFromEmail = await prisma.user.findFirst({
 		where: {
@@ -36,14 +36,16 @@ export async function sendAuthenticationLink(
 	authLink.searchParams.set("code", authLinkCode);
 	authLink.searchParams.set("redirect", env.AUTH_REDIRECT_URL);
 
-	const info = await transporter.sendMail({
+	await transporter.sendMail({
 		from: '"Akvo" <naoresponda@akvo.com>',
 		to: email,
 		subject: "Akvo - Authentication Link",
 		text: `Please click the link below to authenticate your account:\n\n${authLink.toString()}`,
 	});
 
-	response.sendStatus(200);
+	c.status(204);
 
-	return;
-}
+	return c.body(null);
+});
+
+export default app;
