@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import dayjs from "dayjs";
 import { Hono } from "hono";
 import { setCookie } from "hono/cookie";
-import { sign } from "jsonwebtoken";
+import { sign } from "hono/jwt";
 
 import { env } from "@/env";
 
@@ -33,7 +33,7 @@ app.get("/", async (c) => {
 		},
 	});
 
-	const token = sign(
+	const token = await sign(
 		{
 			sub: authLinkFromCode.userId,
 			storeId: managedStore,
