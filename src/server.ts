@@ -7,6 +7,7 @@ import { jwt } from "hono/jwt";
 import { env } from "@/env";
 
 import authenticateFromLink from "@/controllers/authenticate-from-link";
+import createOrder from "@/controllers/create-order";
 import getProfile from "@/controllers/get-profile";
 import registerCustomer from "@/controllers/register-customer";
 import registerStore from "@/controllers/register-store";
@@ -32,6 +33,7 @@ app.use(
 app.route("/customers", registerCustomer);
 app.route("/stores", registerStore);
 app.route("/me", getProfile);
+app.route("/stores", createOrder);
 
 serve(app, (info) => {
 	console.log(`🔥 Server running on port ${info.port}`);

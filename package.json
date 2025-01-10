@@ -24,6 +24,7 @@
 	},
 	"dependencies": {
 		"@hono/node-server": "^1.13.7",
+		"@hono/zod-validator": "^0.4.2",
 		"@paralleldrive/cuid2": "^2.2.2",
 		"@prisma/client": "6.1.0",
 		"dayjs": "^1.11.13",
