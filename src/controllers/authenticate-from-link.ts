@@ -36,7 +36,7 @@ app.get("/", async (c) => {
 	const token = await sign(
 		{
 			sub: authLinkFromCode.userId,
-			storeId: managedStore,
+			storeId: managedStore?.id,
 		},
 		env.JWT_SECRET_KEY,
 	);
