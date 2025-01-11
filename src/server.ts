@@ -8,6 +8,7 @@ import { env } from "@/env";
 
 import approveOrder from "@/controllers/approve-order";
 import authenticateFromLink from "@/controllers/authenticate-from-link";
+import cancelOrder from "@/controllers/cancel-order";
 import createOrder from "@/controllers/create-order";
 import getProfile from "@/controllers/get-profile";
 import registerCustomer from "@/controllers/register-customer";
@@ -36,6 +37,7 @@ app.route("/stores", registerStore);
 app.route("/me", getProfile);
 app.route("/stores", createOrder);
 app.route("/orders", approveOrder);
+app.route("/orders", cancelOrder);
 
 serve(app, (info) => {
 	console.log(`🔥 Server running on port ${info.port}`);
