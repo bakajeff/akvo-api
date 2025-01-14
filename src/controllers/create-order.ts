@@ -19,12 +19,16 @@ app.post(
 					quantity: z.number(),
 				}),
 			),
+			latitude: z.number(),
+			longitude: z.number(),
 		}),
 	),
 	async (c) => {
 		const { sub: customerId } = c.get("jwtPayload");
 		const storeId = c.req.param("storeId");
-		const { items } = c.req.valid("json");
+		const { items, latitude, longitude } = c.req.valid("json");
+
+		console.log(customerId);
 
 		const productsIds = items.map((item) => item.productId);
 
@@ -62,6 +66,8 @@ app.post(
 				totalInCents,
 				customerId,
 				storeId,
+				latitude,
+				longitude,
 				orderItems: {
 					createMany: {
 						data: orderProducts.map((product) => {
