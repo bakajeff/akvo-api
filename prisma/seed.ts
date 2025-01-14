@@ -36,12 +36,60 @@ async function main() {
 
 	console.log(chalk.yellow("✔ Created manager"));
 
+	const origin = {
+		latitude: 35.6704517,
+		longitude: 139.6712387,
+	};
+
+	const [customer1Latitude, customer1Longitude] =
+		faker.location.nearbyGPSCoordinate({
+			origin: [origin.latitude, origin.longitude],
+			radius: 10,
+			isMetric: true,
+		});
+
+	const [customer2Latitude, customer2Longitude] =
+		faker.location.nearbyGPSCoordinate({
+			origin: [origin.latitude, origin.longitude],
+			radius: 10,
+			isMetric: true,
+		});
+
+	const addresses = await prisma.address.createManyAndReturn({
+		data: [
+			{
+				id: createId(),
+				name: faker.location.streetAddress(),
+				latitude: customer1Latitude,
+				longitude: customer1Longitude,
+				userId: customer1.id,
+			},
+			{
+				id: createId(),
+				name: faker.location.streetAddress(),
+				latitude: customer2Latitude,
+				longitude: customer2Longitude,
+				userId: customer2.id,
+			},
+		],
+	});
+
+	console.log(chalk.yellow("✔ Created addresses"));
+
+	const [storeLatitude, storeLongitude] = faker.location.nearbyGPSCoordinate({
+		origin: [origin.latitude, origin.longitude],
+		radius: 10,
+		isMetric: true,
+	});
+
 	const store = await prisma.store.create({
 		data: {
 			id: createId(),
 			name: faker.company.name(),
 			description: faker.company.catchPhrase(),
 			managerId: manager.id,
+			latitude: storeLatitude,
+			longitude: storeLongitude,
 		},
 	});
 
@@ -211,9 +259,17 @@ async function main() {
 			});
 		}
 
+		const randomCustomerId = faker.helpers.arrayElement([
+			customer1.id,
+			customer2.id,
+		]);
+		const randomCustomerAddress = addresses.find(
+			(address) => address.userId === randomCustomerId,
+		);
+
 		ordersToInsert.push({
 			id: orderId,
-			customerId: faker.helpers.arrayElement([customer1.id, customer2.id]),
+			customerId: randomCustomerId,
 			storeId: store.id,
 			status: faker.helpers.arrayElement([
 				"pending",
@@ -223,6 +279,8 @@ async function main() {
 				"delivered",
 			]),
 			totalInCents,
+			latitude: randomCustomerAddress?.latitude || faker.location.latitude(),
+			longitude: randomCustomerAddress?.longitude || faker.location.longitude(),
 			createdAt: faker.date.recent({
 				days: 40,
 			}),

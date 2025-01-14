@@ -23,6 +23,7 @@ model User {
   store     Store?
   order     Order[]
   authLink  AuthLink[]
+  address   Address[]
 }
 
 model Store {
@@ -35,6 +36,8 @@ model Store {
   createdAt   DateTime  @default(now()) @db.Timestamptz(6)
   updatedAt   DateTime  @updatedAt @db.Timestamptz(6)
   order       Order[]
+  latitude    Float
+  longitude   Float
 }
 
 model Product {
@@ -58,6 +61,8 @@ model Order {
   orderItems   OrderItems[]
   status       OrderStatus  @default(pending)
   totalInCents Int
+  latitude     Float
+  longitude    Float
   createdAt    DateTime     @default(now()) @db.Timestamptz()
 }
 
@@ -77,6 +82,15 @@ model AuthLink {
   user      User     @relation(fields: [userId], references: [id])
   userId    String
   createdAt DateTime @default(now()) @db.Timestamptz()
+}
+
+model Address {
+  id        String @id
+  name      String
+  latitude  Float
+  longitude Float
+  user      User   @relation(fields: [userId], references: [id])
+  userId    String
 }
 
 enum OrderStatus {
