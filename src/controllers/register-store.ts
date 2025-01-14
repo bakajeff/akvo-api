@@ -17,10 +17,13 @@ app.post(
 			managerName: z.string().min(1),
 			description: z.string().min(1),
 			email: z.string().email(),
+			latitude: z.number(),
+			longitude: z.number(),
 		}),
 	),
 	async (c) => {
-		const { storeName, managerName, description, email } = c.req.valid("json");
+		const { storeName, managerName, description, email, latitude, longitude } =
+			c.req.valid("json");
 
 		const manager = await prisma.user.create({
 			data: {
@@ -37,6 +40,8 @@ app.post(
 				name: storeName,
 				description,
 				managerId: manager.id,
+				latitude,
+				longitude,
 			},
 		});
 
