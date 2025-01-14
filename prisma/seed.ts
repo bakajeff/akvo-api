@@ -62,14 +62,14 @@ async function main() {
 				name: faker.location.streetAddress(),
 				latitude: customer1Latitude,
 				longitude: customer1Longitude,
-				userId: customer1.id,
+				customerId: customer1.id,
 			},
 			{
 				id: createId(),
 				name: faker.location.streetAddress(),
 				latitude: customer2Latitude,
 				longitude: customer2Longitude,
-				userId: customer2.id,
+				customerId: customer2.id,
 			},
 		],
 	});
@@ -264,7 +264,7 @@ async function main() {
 			customer2.id,
 		]);
 		const randomCustomerAddress = addresses.find(
-			(address) => address.userId === randomCustomerId,
+			(address) => address.customerId === randomCustomerId,
 		);
 
 		ordersToInsert.push({

@@ -28,7 +28,7 @@ app.post(
 				name,
 				latitude,
 				longitude,
-				userId: customerId,
+				customerId,
 			},
 		});
 
