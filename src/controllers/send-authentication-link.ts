@@ -53,9 +53,7 @@ app.post(
 			text: `Please click the link below to authenticate your account:\n\n${authLink.toString()}`,
 		});
 
-		c.status(204);
-
-		return c.body(null);
+		return c.body(null, 204);
 	},
 );
 
