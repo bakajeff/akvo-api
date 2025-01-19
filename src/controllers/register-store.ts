@@ -45,7 +45,7 @@ app.post(
 			},
 		});
 
-		return c.json(store);
+		return c.json(store, 201);
 	},
 );
 

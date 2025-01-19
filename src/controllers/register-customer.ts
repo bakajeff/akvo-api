@@ -28,7 +28,7 @@ app.post(
 			},
 		});
 
-		return c.json(customer);
+		return c.json(customer, 201);
 	},
 );
 

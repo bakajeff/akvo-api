@@ -83,7 +83,7 @@ app.post(
 			},
 		});
 
-		return c.json(order);
+		return c.json(order, 201);
 	},
 );
 
