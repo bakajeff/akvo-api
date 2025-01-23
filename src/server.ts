@@ -2,6 +2,7 @@ import type { JwtVariables } from "hono/jwt";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { jwt } from "hono/jwt";
 
 import { env } from "@/env";
@@ -25,6 +26,22 @@ type Variables = JwtVariables & {
 };
 
 const app = new Hono<{ Variables: Variables }>();
+
+app.use(
+	"/*",
+	cors({
+		origin: (origin) => {
+			if (!origin) {
+				return "*";
+			}
+
+			return origin;
+		},
+		allowHeaders: ["Content-Type"],
+		allowMethods: ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"],
+		credentials: true,
+	}),
+);
 
 app.route("/authenticate", sendAuthenticationLink);
 app.route("/auth-links/authenticate", authenticateFromLink);
