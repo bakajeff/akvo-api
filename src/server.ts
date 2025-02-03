@@ -20,6 +20,7 @@ import registerAddress from "@/controllers/register-address";
 import registerCustomer from "@/controllers/register-customer";
 import registerStore from "@/controllers/register-store";
 import sendAuthenticationLink from "@/controllers/send-authentication-link";
+import chalk from "chalk";
 
 type Variables = JwtVariables & {
 	storeId: string;
@@ -67,5 +68,5 @@ app.route("/orders", deliverOrder);
 app.route("/addresses", registerAddress);
 
 serve(app, (info) => {
-	console.log(`🔥 Server running on port ${info.port}`);
+	console.log(chalk.green(`🚀 Server ready at port ${info.port}`));
 });
