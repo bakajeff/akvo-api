@@ -28,8 +28,6 @@ app.post(
 		const storeId = c.req.param("storeId");
 		const { items, latitude, longitude } = c.req.valid("json");
 
-		console.log(customerId);
-
 		const productsIds = items.map((item) => item.productId);
 
 		const products = await prisma.product.findMany({
